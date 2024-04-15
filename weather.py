@@ -1,7 +1,9 @@
 import requests
 from flask import Flask, render_template, request, url_for 
-import config
+import os
 from urllib.parse import quote
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__, static_url_path="/static") #initialising the app
 
@@ -14,14 +16,14 @@ def get_weather():
     city = request.form['city']
     city_name = quote(city)
 
-    api_key = config.api_key
+    api_key = os.getenv('api_key')
     url = f"http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key}&units=metric"
 
     response = requests.get(url)
     weather_data = response.json()
     # print (weather_data)
 
-    if weather_data["cod"] == 200:
+    if response.status_code == 200:
         data = {
            "city": weather_data['name'],
             "temp": weather_data['main']['temp'],
