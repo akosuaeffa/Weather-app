@@ -36,4 +36,4 @@ def get_weather():
         return render_template("error.html",  err_ymessage="Page could not be found")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=8000, debug=True)
